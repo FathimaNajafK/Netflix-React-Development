@@ -5,13 +5,30 @@ import axios from '../../axios'
 
 function Banner() {
   const [movie, setMovie]=useState()
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-useEffect(()=>{
-    axios.get(`trending/all/day?api_key=${API_KEY}&language=en-US`).then((Response)=>{
-      console.log(Response.data.results[3])
-      setMovie(Response.data.results[3])
-    })
-},[])
+// useEffect(()=>{
+//     axios.get(`trending/all/day?api_key=${API_KEY}&language=en-US`).then((Response)=>{
+//       console.log(Response.data.results[3])
+//       setMovie(Response.data.results[3])
+//     })
+// },[])
+
+useEffect(() => {
+  const fetchData = async () => {
+      const response = await axios.get(`trending/all/day?api_key=${API_KEY}&language=en-US`);
+      setMovie(response.data.results[currentIndex]);
+  };
+
+  fetchData();
+
+  const intervalId = setInterval(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % 30 ); // Assuming there are 20 results
+    fetchData();
+  }, 2000);
+
+  return () => clearInterval(intervalId);
+}, [currentIndex]);
 
   return (
     
