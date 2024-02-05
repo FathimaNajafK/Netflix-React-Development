@@ -23,9 +23,9 @@ useEffect(() => {
   fetchData();
 
   const intervalId = setInterval(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % 30 ); // Assuming there are 20 results
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % 20 ); // Assuming there are 20 results
     fetchData();
-  }, 2000);
+  }, 5000);
 
   return () => clearInterval(intervalId);
 }, [currentIndex]);
