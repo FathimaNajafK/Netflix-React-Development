@@ -2,6 +2,8 @@ import React, { useEffect, useState, useSyncExternalStore } from 'react'
 import './Banner.css'
 import { API_KEY ,imageUrl} from '../../constants/constants'
 import axios from '../../axios'
+import { tmdbdata } from '../../data'
+
 
 function Banner() {
   const [movie, setMovie]=useState()
@@ -16,14 +18,15 @@ function Banner() {
 
 useEffect(() => {
   const fetchData = async () => {
-      const response = await axios.get(`trending/all/day?api_key=${API_KEY}&language=en-US`);
-      setMovie(response.data.results[currentIndex]);
+      // const response = await axios.get(`trending/all/day?api_key=${API_KEY}&language=en-US`);
+      setMovie(tmdbdata["banner"][currentIndex]);
+     
   };
 
   fetchData();
 
   const intervalId = setInterval(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % 20 ); // Assuming there are 20 results
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % 4); // Assuming there are 20 results
     fetchData();
   }, 5000);
 
@@ -33,8 +36,9 @@ useEffect(() => {
   return (
     
     <div 
-    style={{backgroundImage:`url(${movie ? imageUrl+movie.backdrop_path : ""})`}}
+    style={{backgroundImage:`url(${require (`../../assets/image/${movie ? movie.imgname:"movie1.jpg"}`) })`}}
     className='banner'>
+      
         <div className='content'>
             <h1 className='title'>{movie ? movie.title : ""}</h1>
             <div className='banner_button'>
